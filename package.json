@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/annaegorovaa/TODOlist/issues"
   },
-  "homepage": "https://github.com/annaegorovaa/TODOlist#readme"
+  "homepage": "https://github.com/annaegorovaa/TODOlist#readme",
+  "devDependencies": {
+    "eslint": "^5.2.0"
+  }
 }
