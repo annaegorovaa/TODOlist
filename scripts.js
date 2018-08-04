@@ -16,37 +16,46 @@ document.getElementById('button-addon2').addEventListener('click', () => {
 
 function renderList() {
   const table = document.getElementById('list');
-  let tr;
-  let td1;
-  let td2;
-  let checkbox;
 
   table.innerHTML = '';
 
   list.forEach((item, i) => {
-    tr = document.createElement('tr');
-    td1 = document.createElement('td');
-    checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
+    let tr = document.createElement('tr');
+    let td1 = document.createElement('td');
+    let checkbox = document.createElement('i');
+    checkbox.className = 'far fa-circle';
     checkbox.setAttribute('index', i);
     checkbox.addEventListener('click', e => {
       changeDone(e.target.getAttribute('index'));
     });
     if (item.done) {
       tr.className = 'done';
-      checkbox.checked = true;
+      checkbox.className = list[i].done ? 'far fa-check-circle' : 'far fa-circle';
     }
     td1.appendChild(checkbox);
     tr.appendChild(td1);
-    td2 = document.createElement('td');
+    let td2 = document.createElement('td');
     td2.innerText = item.title;
     tr.appendChild(td2);
     table.appendChild(tr);
+    let td3 = document.createElement('td');
+    let del = document.createElement('i');
+    del.className = 'far fa-trash-alt';
+    del.addEventListener('click',() => {
+      removeTask(i);
+    });
+    td3.appendChild(del);
+    tr.appendChild(td3);
   });
   localStorage.setItem('tasks', JSON.stringify(list));
-}
 
+}
 function changeDone(index) {
   list[index].done = !list[index].done;
+  renderList();
+}
+
+function removeTask(value) {
+  list.splice(value, 1);
   renderList();
 }
