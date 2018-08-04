@@ -2,37 +2,43 @@ const list =[];
 
 renderList();
 
-function addTask() {
+document.getElementById('button-addon2').addEventListener('click', () => {
   let task = document.getElementById('input');
   let taskValue = task.value;
   list.push({title: taskValue, done: false});
   task.value = '';
   renderList();
-}
+});
 
 function renderList() {
-  const ul = document.getElementById('list');
-  let li;
-  let button;
+  const table = document.getElementById('list');
+  let tr;
+  let td1;
+  let td2;
+  let checkbox;
 
-  ul.innerHTML = '';
+  table.innerHTML = '';
 
   list.forEach((item, i) => {
-    li = document.createElement('li');
-    li.innerHTML = item.title;
-    button = document.createElement('button');
-    button.setAttribute('index', i);
-    button.innerHTML = 'Done';
-    button.addEventListener('click', e => {
+    tr = document.createElement('tr');
+    td1 = document.createElement('td');
+    checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.setAttribute('index', i);
+    checkbox.addEventListener('click', e => {
       changeDone(e.target.getAttribute('index'));
     });
     if (item.done) {
-      li.className = 'done';
+      tr.className = 'done';
+      checkbox.checked = true;
     }
-    li.appendChild(button);
-    ul.appendChild(li);
+    td1.appendChild(checkbox);
+    tr.appendChild(td1);
+    td2 = document.createElement('td');
+    td2.innerText = item.title;
+    tr.appendChild(td2);
+    table.appendChild(tr);
   });
-
 }
 
 function changeDone(index) {
