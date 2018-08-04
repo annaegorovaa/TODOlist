@@ -1,4 +1,8 @@
-const list =[];
+let list =[];
+
+if (localStorage.tasks) {
+  list = JSON.parse(localStorage.tasks);
+}
 
 renderList();
 
@@ -39,6 +43,7 @@ function renderList() {
     tr.appendChild(td2);
     table.appendChild(tr);
   });
+  localStorage.setItem('tasks', JSON.stringify(list));
 }
 
 function changeDone(index) {
