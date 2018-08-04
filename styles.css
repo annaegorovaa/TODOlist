@@ -2,17 +2,15 @@
     text-decoration: line-through;
     color: #9c9c9c;
 }
-label {
-    display: block;
-}
 
 h1 {
     text-align: center;
 }
 
 body {
-    background-color: #c5c7ff!important;
+    background-color: #dce0ff!important;
 }
 #button-addon2 {
     background-color: cornflowerblue;
+    color: white;
 }
