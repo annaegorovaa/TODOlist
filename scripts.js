@@ -9,7 +9,9 @@ renderList();
 document.getElementById('button-addon2').addEventListener('click', () => {
   let task = document.getElementById('input');
   let taskValue = task.value;
-  list.push({title: taskValue, done: false});
+  if (taskValue) {
+    list.push({title: taskValue, done: false});
+  }
   task.value = '';
   renderList();
 });

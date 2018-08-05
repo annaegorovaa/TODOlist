@@ -2,15 +2,16 @@
     text-decoration: line-through;
     color: #9c9c9c;
 }
-
 h1 {
     text-align: center;
 }
-
 body {
-    background-color: #dce0ff!important;
+    background-color: #dce0ff !important;
 }
-#button-addon2 {
-    background-color: cornflowerblue;
-    color: white;
+.btn-outline-light {
+    background-color: cornflowerblue !important;
+    color: white !important;
+}
+.col-1 {
+    width: 5% !important;
 }
