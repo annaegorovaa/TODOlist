@@ -15,3 +15,6 @@ body {
 .col-1 {
     width: 5% !important;
 }
+i {
+    cursor: pointer;
+}
