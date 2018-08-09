@@ -42,10 +42,7 @@ function renderList() {
 
   list.forEach((item, i) => {
     let tr = document.createElement('tr');
-    let checkbox = document.createElement('i');
-    checkbox.className = 'far fa-circle';
-    checkbox.setAttribute('index', i);
-    checkbox.addEventListener('click', checkboxClickHandler);
+    let checkbox = createCheckbox(i);
     if (item.done) {
       tr.className = 'done';
       checkbox.className = list[i].done ? 'far fa-check-circle' : 'far fa-circle';
@@ -56,25 +53,43 @@ function renderList() {
     let td2 = document.createElement('td');
     td2.innerText = item.title;
     tr.appendChild(td2);
+    let edit = createEditButton(i);
     let td3 = document.createElement('td');
-    let edit = document.createElement('i');
-    edit.className = 'far fa-edit';
-    edit.setAttribute('data-toggle', 'modal');
-    edit.setAttribute('data-target', '#modal');
-    edit.setAttribute('index', i);
-    edit.addEventListener('click', editClickHandler);
     td3.appendChild(edit);
     tr.appendChild(td3);
+    let del = createDelButton(i);
     let td4 = document.createElement('td');
-    let del = document.createElement('i');
-    del.className = 'far fa-trash-alt';
-    del.setAttribute('index', i);
-    del.addEventListener('click', delClickHandler);
     td4.appendChild(del);
     tr.appendChild(td4);
     table.appendChild(tr);
   });
   localStorage.setItem('tasks', JSON.stringify(list));
+}
+
+function createCheckbox(index) {
+  let checkbox = document.createElement('i');
+  checkbox.className = 'far fa-circle';
+  checkbox.setAttribute('index', index);
+  checkbox.addEventListener('click', checkboxClickHandler);
+  return checkbox;
+}
+
+function createEditButton(index) {
+  let edit = document.createElement('i');
+  edit.className = 'far fa-edit';
+  edit.setAttribute('data-toggle', 'modal');
+  edit.setAttribute('data-target', '#modal');
+  edit.setAttribute('index', index);
+  edit.addEventListener('click', editClickHandler);
+  return edit;
+}
+
+function createDelButton(index) {
+  let del = document.createElement('i');
+  del.className = 'far fa-trash-alt';
+  del.setAttribute('index', index);
+  del.addEventListener('click', delClickHandler);
+  return del;
 }
 
 function changeDone(index) {
