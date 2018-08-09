@@ -54,19 +54,19 @@ function delClickHandler(e) {
 function renderList(displayOption) {
   const table = document.getElementById('list');
   table.innerHTML = '';
-  for (let i = 0; i < list.length; i++) {
-    if (displayOption === 'all' || displayOption === 'done' && list[i].done || displayOption === 'undone' && !list[i].done) {
+  list.forEach((item, i) => {
+    if (displayOption === 'all' || displayOption === 'done' && item.done || displayOption === 'undone' && !item.done) {
       let tr = document.createElement('tr');
       let checkbox = createCheckbox(i);
-      if (list[i].done) {
+      if (item.done) {
         tr.className = 'done';
-        checkbox.className = list[i].done ? 'far fa-check-circle' : 'far fa-circle';
+        checkbox.className = item.done ? 'far fa-check-circle' : 'far fa-circle';
       }
       let td1 = document.createElement('td');
       td1.appendChild(checkbox);
       tr.appendChild(td1);
       let td2 = document.createElement('td');
-      td2.innerText = list[i].title;
+      td2.innerText = item.title;
       tr.appendChild(td2);
       let edit = createEditButton(i);
       let td3 = document.createElement('td');
@@ -78,7 +78,7 @@ function renderList(displayOption) {
       tr.appendChild(td4);
       table.appendChild(tr);
     }
-  }
+  });
   localStorage.setItem('tasks', JSON.stringify(list));
 }
 
