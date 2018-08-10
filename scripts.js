@@ -38,6 +38,8 @@ document.getElementById('undone-tasks').addEventListener('click', () => {
   renderList(displayOption);
 });
 
+document.getElementById('btn-xhr').addEventListener('click', () => loadToDoListByXHR());
+
 function checkboxClickHandler(e) {
   changeDone(e.target.getAttribute('index'));
 }
@@ -121,4 +123,24 @@ function removeTask(value) {
 function changeTask(index, value) {
   list[index].title = value;
   renderList(displayOption);
+}
+
+function loadToDoListByXHR() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://jsonplaceholder.typicode.com/todos', true);
+  xhr.send();
+  let loadedList = [];
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      loadedList = JSON.parse(xhr.response);
+      loadedList.forEach(item => {
+        item.done = item.completed;
+      });
+      list = [
+        ...list,
+        ...loadedList
+      ];
+      renderList(displayOption);
+    }
+  };
 }
