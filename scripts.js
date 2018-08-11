@@ -13,7 +13,7 @@ document.getElementById('button-addon2').addEventListener('click', () => {
   let task = document.getElementById('input');
   let taskValue = task.value;
   if (taskValue) {
-    list.push({title: taskValue, done: false});
+    list.push({title: taskValue, done: false, date: new Date()});
   }
   task.value = '';
   renderList(displayOption);
@@ -35,6 +35,16 @@ document.getElementById('done-tasks').addEventListener('click', () => {
 
 document.getElementById('undone-tasks').addEventListener('click', () => {
   displayOption = 'undone';
+  renderList(displayOption);
+});
+
+document.getElementById('name-sort').addEventListener('click', () => {
+  list.sort(compareName);
+  renderList(displayOption);
+});
+
+document.getElementById('date-sort').addEventListener('click', () => {
+  list.sort(compareDate);
   renderList(displayOption);
 });
 
@@ -132,9 +142,10 @@ function loadToDoListByXHR() {
   let loadedList = [];
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
-      loadedList = JSON.parse(xhr.response).map(el => ({
+      loadedList = JSON.parse(xhr.response).map((el, i) => ({
         ...el,
-        done: el.completed
+        done: el.completed,
+        date: new Date((new Date).getTime() + i)
       }));
       list = [
         ...list,
@@ -143,4 +154,24 @@ function loadToDoListByXHR() {
       renderList(displayOption);
     }
   };
+}
+
+function compareName(task1, task2) {
+  if (task1.title < task2.title) {
+    return -1;
+  }
+  if (task1.title > task2.title) {
+    return 1;
+  }
+  return 0;
+}
+
+function compareDate(task1, task2) {
+  if (task1.date.getTime() < task2.date.getTime()) {
+    return -1;
+  }
+  if (task1.date.getTime() > task2.date.getTime()) {
+    return 1;
+  }
+  return 0;
 }

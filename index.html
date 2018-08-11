@@ -31,8 +31,17 @@
             <button class="dropdown-item" id="done-tasks" type="button">Display done</button>
             <button class="dropdown-item" id="undone-tasks" type="button">Display undone</button>
         </div>
-        <button class="btn btn-outline-light" type="button" id="btn-xhr">Load tasks</button>
     </div>
+    <div class="dropdown">
+        <button class="btn btn-outline-light dropdown-toggle" type="button" id="sortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort options
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+            <button class="dropdown-item" id="name-sort" type="button">Sort by name</button>
+            <button class="dropdown-item" id="date-sort" type="button">Sort by date</button>
+        </div>
+    </div>
+    <button class="btn btn-outline-light" type="button" id="btn-xhr">Load tasks</button>
     <table class="table table-striped">
         <thead>
         <tr>

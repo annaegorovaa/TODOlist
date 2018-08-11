@@ -6,7 +6,7 @@ h1 {
     text-align: center;
 }
 body {
-    background-color: #dce0ff !important;
+    background-color: #deddff !important;
 }
 .btn-outline-light {
     background-color: cornflowerblue !important;
@@ -17,4 +17,7 @@ body {
 }
 i {
     cursor: pointer;
+}
+.dropdown {
+    display: inline-block;;
 }
