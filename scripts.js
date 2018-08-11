@@ -13,7 +13,7 @@ document.getElementById('button-addon2').addEventListener('click', () => {
   let task = document.getElementById('input');
   let taskValue = task.value;
   if (taskValue) {
-    list.push({title: taskValue, done: false, date: new Date()});
+    list.push({title: taskValue, done: false, date: Date.now()});
   }
   task.value = '';
   renderList(displayOption);
@@ -145,7 +145,7 @@ function loadToDoListByXHR() {
       loadedList = JSON.parse(xhr.response).map((el, i) => ({
         ...el,
         done: el.completed,
-        date: new Date((new Date).getTime() + i)
+        date: Date.now() + i
       }));
       list = [
         ...list,
@@ -167,10 +167,10 @@ function compareName(task1, task2) {
 }
 
 function compareDate(task1, task2) {
-  if (task1.date.getTime() < task2.date.getTime()) {
+  if (task1.date < task2.date) {
     return -1;
   }
-  if (task1.date.getTime() > task2.date.getTime()) {
+  if (task1.date > task2.date) {
     return 1;
   }
   return 0;
