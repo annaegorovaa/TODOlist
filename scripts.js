@@ -132,10 +132,10 @@ function loadToDoListByXHR() {
   let loadedList = [];
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
-      loadedList = JSON.parse(xhr.response);
-      loadedList.forEach(item => {
-        item.done = item.completed;
-      });
+      loadedList = JSON.parse(xhr.response).map(el => ({
+        ...el,
+        done: el.completed
+      }));
       list = [
         ...list,
         ...loadedList
