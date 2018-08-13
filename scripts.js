@@ -50,6 +50,8 @@ document.getElementById('date-sort').addEventListener('click', () => {
 
 document.getElementById('btn-xhr').addEventListener('click', () => loadToDoListByXHR());
 
+document.getElementById('clear-tasks').addEventListener('click', () => clearList());
+
 function checkboxClickHandler(e) {
   changeDone(e.target.getAttribute('index'));
 }
@@ -132,6 +134,11 @@ function removeTask(value) {
 
 function changeTask(index, value) {
   list[index].title = value;
+  renderList(displayOption);
+}
+
+function clearList() {
+  list = [];
   renderList(displayOption);
 }
 
