@@ -22,27 +22,34 @@
             <button class="btn btn-outline-light" type="button" id="button-addon2">Add task</button>
         </div>
     </div>
-    <div class="dropdown">
-        <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Display options
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item" id="all-tasks" type="button">Display all</button>
-            <button class="dropdown-item" id="done-tasks" type="button">Display done</button>
-            <button class="dropdown-item" id="undone-tasks" type="button">Display undone</button>
+    <div class="row">
+        <div class="col">
+            <div class="dropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Display options
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <button class="dropdown-item" id="all-tasks" type="button">Display all</button>
+                    <button class="dropdown-item" id="done-tasks" type="button">Display done</button>
+                    <button class="dropdown-item" id="undone-tasks" type="button">Display undone</button>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" id="sortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort options
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                    <button class="dropdown-item" id="name-sort" type="button">Sort by name</button>
+                    <button class="dropdown-item" id="date-sort" type="button">Sort by date</button>
+                </div>
+            </div>
+            <button class="btn btn-outline-light" type="button" id="btn-xhr">Load tasks</button>
+            <button class="btn btn-outline-light" type="button" id="clear-tasks">Clear list</button>
+        </div>
+        <div class="col-6">
+            <input type="text" id="search" class="form-control" placeholder="Search task" aria-describedby="button-addon2">
         </div>
     </div>
-    <div class="dropdown">
-        <button class="btn btn-outline-light dropdown-toggle" type="button" id="sortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort options
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-            <button class="dropdown-item" id="name-sort" type="button">Sort by name</button>
-            <button class="dropdown-item" id="date-sort" type="button">Sort by date</button>
-        </div>
-    </div>
-    <button class="btn btn-outline-light" type="button" id="btn-xhr">Load tasks</button>
-    <button class="btn btn-outline-light" type="button" id="clear-tasks">Clear list</button>
     <table class="table table-striped">
         <thead>
         <tr>

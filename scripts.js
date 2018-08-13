@@ -1,13 +1,25 @@
 let list =[];
 let currentIndex;
 const editableTask = document.getElementById('editable-task');
-let displayOption = 'all';
+let displayOptions = {};
 
 if (localStorage.tasks) {
   list = JSON.parse(localStorage.tasks);
 }
 
-renderList(displayOption);
+if (localStorage.dispOptions) {
+  displayOptions = JSON.parse(localStorage.dispOptions);
+} else {
+  displayOptions = {
+    showDone: true,
+    showUndone: true,
+    sortAscend: true,
+    chosenSort: 'date',
+    search: ''
+  };
+}
+
+applyOptions();
 
 document.onkeyup = typeEnter;
 
@@ -18,33 +30,43 @@ document.getElementById('save-btn').addEventListener('click', () => {
 });
 
 document.getElementById('all-tasks').addEventListener('click', () => {
-  displayOption = 'all';
-  renderList(displayOption);
+  displayOptions.showDone = true;
+  displayOptions.showUndone = true;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
+  applyOptions();
 });
 
 document.getElementById('done-tasks').addEventListener('click', () => {
-  displayOption = 'done';
-  renderList(displayOption);
+  displayOptions.showDone = true;
+  displayOptions.showUndone = false;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
+  applyOptions();
 });
 
 document.getElementById('undone-tasks').addEventListener('click', () => {
-  displayOption = 'undone';
-  renderList(displayOption);
+  displayOptions.showDone = false;
+  displayOptions.showUndone = true;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
+  applyOptions();
 });
 
 document.getElementById('name-sort').addEventListener('click', () => {
+  displayOptions.sortAscend = !displayOptions.sortAscend;
   list.sort(compareName);
-  renderList(displayOption);
+  applyOptions();
 });
 
 document.getElementById('date-sort').addEventListener('click', () => {
+  displayOptions.sortAscend = !displayOptions.sortAscend;
   list.sort(compareDate);
-  renderList(displayOption);
+  applyOptions();
 });
 
 document.getElementById('btn-xhr').addEventListener('click', () => loadToDoListByXHR());
 
 document.getElementById('clear-tasks').addEventListener('click', () => clearList());
+
+document.getElementById('search').addEventListener('keyup', applySearch);
 
 function addTask() {
   let task = document.getElementById('input');
@@ -53,7 +75,8 @@ function addTask() {
     list.push({title: taskValue, done: false, date: Date.now()});
   }
   task.value = '';
-  renderList(displayOption);
+  localStorage.setItem('tasks', JSON.stringify(list));
+  applyOptions();
 }
 
 function checkboxClickHandler(e) {
@@ -69,35 +92,32 @@ function delClickHandler(e) {
   removeTask(e.target.getAttribute('index'));
 }
 
-function renderList(displayOption) {
+function renderList(alteredList) {
   const table = document.getElementById('list');
   table.innerHTML = '';
-  list.forEach((item, i) => {
-    if (displayOption === 'all' || displayOption === 'done' && item.done || displayOption === 'undone' && !item.done) {
-      let tr = document.createElement('tr');
-      let checkbox = createCheckbox(i);
-      if (item.done) {
-        tr.className = 'done';
-        checkbox.className = item.done ? 'far fa-check-circle' : 'far fa-circle';
-      }
-      let td1 = document.createElement('td');
-      td1.appendChild(checkbox);
-      tr.appendChild(td1);
-      let td2 = document.createElement('td');
-      td2.innerText = item.title;
-      tr.appendChild(td2);
-      let edit = createEditButton(i);
-      let td3 = document.createElement('td');
-      td3.appendChild(edit);
-      tr.appendChild(td3);
-      let del = createDelButton(i);
-      let td4 = document.createElement('td');
-      td4.appendChild(del);
-      tr.appendChild(td4);
-      table.appendChild(tr);
+  alteredList.forEach((item) => {
+    let tr = document.createElement('tr');
+    let checkbox = createCheckbox(item.index);
+    if (item.done) {
+      tr.className = 'done';
+      checkbox.className = item.done ? 'far fa-check-circle' : 'far fa-circle';
     }
+    let td1 = document.createElement('td');
+    td1.appendChild(checkbox);
+    tr.appendChild(td1);
+    let td2 = document.createElement('td');
+    td2.innerText = item.title;
+    tr.appendChild(td2);
+    let edit = createEditButton(item.index);
+    let td3 = document.createElement('td');
+    td3.appendChild(edit);
+    tr.appendChild(td3);
+    let del = createDelButton(item.index);
+    let td4 = document.createElement('td');
+    td4.appendChild(del);
+    tr.appendChild(td4);
+    table.appendChild(tr);
   });
-  localStorage.setItem('tasks', JSON.stringify(list));
 }
 
 function createCheckbox(index) {
@@ -128,22 +148,23 @@ function createDelButton(index) {
 
 function changeDone(index) {
   list[index].done = !list[index].done;
-  renderList(displayOption);
+  applyOptions();
 }
 
 function removeTask(value) {
   list.splice(value, 1);
-  renderList(displayOption);
+  applyOptions();
 }
 
 function changeTask(index, value) {
   list[index].title = value;
-  renderList(displayOption);
+  applyOptions();
 }
 
 function clearList() {
   list = [];
-  renderList(displayOption);
+  localStorage.setItem('tasks', JSON.stringify(list));
+  applyOptions();
 }
 
 function loadToDoListByXHR() {
@@ -162,27 +183,28 @@ function loadToDoListByXHR() {
         ...list,
         ...loadedList
       ];
-      renderList(displayOption);
+      localStorage.setItem('tasks', JSON.stringify(list));
+      applyOptions();
     }
   };
 }
 
 function compareName(task1, task2) {
   if (task1.title < task2.title) {
-    return -1;
+    return displayOptions.sortAscend ? -1 : 1;
   }
   if (task1.title > task2.title) {
-    return 1;
+    return displayOptions.sortAscend ? 1 : -1;
   }
   return 0;
 }
 
 function compareDate(task1, task2) {
   if (task1.date < task2.date) {
-    return -1;
+    return displayOptions.sortAscend ? -1 : 1;
   }
   if (task1.date > task2.date) {
-    return 1;
+    return displayOptions.sortAscend ? 1 : -1;
   }
   return 0;
 }
@@ -192,4 +214,22 @@ function typeEnter(e) {
   if (x === 'Enter') {
     addTask();
   }
+}
+
+function applyOptions() {
+  let alteredList = [];
+  list.forEach((item, i) => {
+    if ((displayOptions.showDone && item.done) || (displayOptions.showUndone && !item.done)) {
+      alteredList.push(item);
+      alteredList[alteredList.length - 1].index = i;
+    }
+  });
+  alteredList.sort(displayOptions.chosenSort === 'date' ? compareDate : compareName);
+  alteredList = alteredList.filter(el => el.title.includes(displayOptions.search));
+  renderList(alteredList);
+}
+
+function applySearch(e) {
+  displayOptions.search = e.target.value;
+  applyOptions();
 }
