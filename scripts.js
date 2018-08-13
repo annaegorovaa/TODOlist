@@ -9,15 +9,9 @@ if (localStorage.tasks) {
 
 renderList(displayOption);
 
-document.getElementById('button-addon2').addEventListener('click', () => {
-  let task = document.getElementById('input');
-  let taskValue = task.value;
-  if (taskValue) {
-    list.push({title: taskValue, done: false, date: Date.now()});
-  }
-  task.value = '';
-  renderList(displayOption);
-});
+document.onkeyup = typeEnter;
+
+document.getElementById('button-addon2').addEventListener('click', () => addTask());
 
 document.getElementById('save-btn').addEventListener('click', () => {
   changeTask(currentIndex, editableTask.value);
@@ -51,6 +45,16 @@ document.getElementById('date-sort').addEventListener('click', () => {
 document.getElementById('btn-xhr').addEventListener('click', () => loadToDoListByXHR());
 
 document.getElementById('clear-tasks').addEventListener('click', () => clearList());
+
+function addTask() {
+  let task = document.getElementById('input');
+  let taskValue = task.value;
+  if (taskValue) {
+    list.push({title: taskValue, done: false, date: Date.now()});
+  }
+  task.value = '';
+  renderList(displayOption);
+}
 
 function checkboxClickHandler(e) {
   changeDone(e.target.getAttribute('index'));
@@ -181,4 +185,11 @@ function compareDate(task1, task2) {
     return 1;
   }
   return 0;
+}
+
+function typeEnter(e) {
+  let x = e.key || e.which;
+  if (x === 'Enter') {
+    addTask();
+  }
 }
