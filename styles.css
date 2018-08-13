@@ -21,3 +21,7 @@ i {
 .dropdown {
     display: inline-block;;
 }
+.container {
+    background: #fff;
+    padding-bottom: 2rem;
+}
