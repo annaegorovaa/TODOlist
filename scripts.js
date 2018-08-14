@@ -52,12 +52,14 @@ document.getElementById('undone-tasks').addEventListener('click', () => {
 
 document.getElementById('name-sort').addEventListener('click', () => {
   displayOptions.sortAscend = !displayOptions.sortAscend;
+  displayOptions.chosenSort = 'name';
   list.sort(compareName);
   applyOptions();
 });
 
 document.getElementById('date-sort').addEventListener('click', () => {
   displayOptions.sortAscend = !displayOptions.sortAscend;
+  displayOptions.chosenSort = 'date';
   list.sort(compareDate);
   applyOptions();
 });
@@ -190,10 +192,10 @@ function loadToDoListByXHR() {
 }
 
 function compareName(task1, task2) {
-  if (task1.title < task2.title) {
+  if (task1.title.toLowerCase() < task2.title.toLowerCase()) {
     return displayOptions.sortAscend ? -1 : 1;
   }
-  if (task1.title > task2.title) {
+  if (task1.title.toLowerCase() > task2.title.toLowerCase()) {
     return displayOptions.sortAscend ? 1 : -1;
   }
   return 0;
@@ -224,12 +226,13 @@ function applyOptions() {
       alteredList[alteredList.length - 1].index = i;
     }
   });
-  alteredList.sort(displayOptions.chosenSort === 'date' ? compareDate : compareName);
   alteredList = alteredList.filter(el => el.title.includes(displayOptions.search));
+  alteredList.sort(displayOptions.chosenSort === 'date' ? compareDate : compareName);
   renderList(alteredList);
 }
 
 function applySearch(e) {
   displayOptions.search = e.target.value;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
   applyOptions();
 }
