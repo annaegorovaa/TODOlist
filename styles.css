@@ -15,7 +15,7 @@ body {
 .col-1 {
     width: 5% !important;
 }
-i {
+i, #task, #date {
     cursor: pointer;
 }
 .dropdown {

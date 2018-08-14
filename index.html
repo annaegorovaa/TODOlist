@@ -24,15 +24,6 @@
     </div>
     <div class="row">
         <div class="col">
-            <div class="dropdown">
-                <button class="btn btn-outline-light dropdown-toggle" type="button" id="sortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Sort options
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                    <button class="dropdown-item" id="name-sort" type="button">Sort by name</button>
-                    <button class="dropdown-item" id="date-sort" type="button">Sort by date</button>
-                </div>
-            </div>
             <button class="btn btn-outline-light" type="button" id="btn-xhr">Load tasks</button>
             <button class="btn btn-outline-light" type="button" id="clear-tasks">Clear list</button>
             <select class="custom-select col-4">
@@ -49,7 +40,8 @@
         <thead>
         <tr>
             <th scope="col" class="col-1">Done</th>
-            <th scope="col" class="col">Task</th>
+            <th scope="col" class="col" id="task">Task<i id="task-i"></i></th>
+            <th scope="col" class="col" id="date">Created<i id="date-i"></i></th>
             <th scope="col" class="col-1">Edit</th>
             <th scope="col" class="col-1">Delete</th>
         </tr>

@@ -50,25 +50,29 @@ document.getElementById('undone-tasks').addEventListener('click', () => {
   applyOptions();
 });
 
-document.getElementById('name-sort').addEventListener('click', () => {
-  displayOptions.sortAscend = !displayOptions.sortAscend;
-  displayOptions.chosenSort = 'name';
-  list.sort(compareName);
-  applyOptions();
-});
-
-document.getElementById('date-sort').addEventListener('click', () => {
-  displayOptions.sortAscend = !displayOptions.sortAscend;
-  displayOptions.chosenSort = 'date';
-  list.sort(compareDate);
-  applyOptions();
-});
-
 document.getElementById('btn-xhr').addEventListener('click', () => loadToDoListByXHR());
 
 document.getElementById('clear-tasks').addEventListener('click', () => clearList());
 
 document.getElementById('search').addEventListener('keyup', applySearch);
+
+document.getElementById('task').addEventListener('click', () => {
+  displayOptions.sortAscend = !displayOptions.sortAscend;
+  document.getElementById('task-i').className = displayOptions.sortAscend ? 'fas fa-sort-up' : 'fas fa-sort-down';
+  displayOptions.chosenSort = 'name';
+  document.getElementById('date-i').removeAttribute('class');
+  list.sort(compareName);
+  applyOptions();
+});
+
+document.getElementById('date').addEventListener('click', () => {
+  displayOptions.sortAscend = !displayOptions.sortAscend;
+  document.getElementById('date-i').className = displayOptions.sortAscend ? 'fas fa-sort-up' : 'fas fa-sort-down';
+  displayOptions.chosenSort = 'date';
+  document.getElementById('task-i').removeAttribute('class');
+  list.sort(compareDate);
+  applyOptions();
+});
 
 function addTask() {
   let task = document.getElementById('input');
@@ -110,14 +114,17 @@ function renderList(alteredList) {
     let td2 = document.createElement('td');
     td2.innerText = item.title;
     tr.appendChild(td2);
-    let edit = createEditButton(item.index);
     let td3 = document.createElement('td');
-    td3.appendChild(edit);
+    td3.innerText = new Date(item.date).toLocaleDateString();
     tr.appendChild(td3);
-    let del = createDelButton(item.index);
+    let edit = createEditButton(item.index);
     let td4 = document.createElement('td');
-    td4.appendChild(del);
+    td4.appendChild(edit);
     tr.appendChild(td4);
+    let del = createDelButton(item.index);
+    let td5 = document.createElement('td');
+    td5.appendChild(del);
+    tr.appendChild(td5);
     table.appendChild(tr);
   });
 }
