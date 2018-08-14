@@ -127,6 +127,12 @@ function createCheckbox(index) {
   return checkbox;
 }
 
+function createTaskText(text) {
+  let task = document.createElement('td');
+  task.innerText = text;
+  return task;
+}
+
 function createDate(dateValue) {
   let date = document.createElement('td');
   date.innerText = new Date(dateValue).toLocaleDateString();
@@ -242,8 +248,7 @@ function renderList(alteredList) {
     let td1 = document.createElement('td');
     td1.appendChild(checkbox);
     tr.appendChild(td1);
-    let td2 = document.createElement('td');
-    td2.innerText = item.title;
+    let td2 = createTaskText(item.title);
     tr.appendChild(td2);
     let td3 = createDate(item.date);
     tr.appendChild(td3);
