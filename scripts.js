@@ -9,6 +9,7 @@ if (localStorage.tasks) {
 
 if (localStorage.dispOptions) {
   displayOptions = JSON.parse(localStorage.dispOptions);
+  document.getElementById('search').value = displayOptions.search;
 } else {
   displayOptions = {
     showDone: true,
@@ -17,6 +18,7 @@ if (localStorage.dispOptions) {
     chosenSort: 'date',
     search: ''
   };
+  document.getElementById('search').value = displayOptions.search;
 }
 
 applyOptions();
