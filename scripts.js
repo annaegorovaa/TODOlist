@@ -9,7 +9,6 @@ if (localStorage.tasks) {
 
 if (localStorage.dispOptions) {
   displayOptions = JSON.parse(localStorage.dispOptions);
-  document.getElementById('search').value = displayOptions.search;
 } else {
   displayOptions = {
     showDone: true,
@@ -18,7 +17,6 @@ if (localStorage.dispOptions) {
     chosenSort: 'date',
     search: ''
   };
-  document.getElementById('search').value = displayOptions.search;
 }
 
 applyOptions();
@@ -221,6 +219,16 @@ function typeEnter(e) {
 }
 
 function applyOptions() {
+  document.getElementById('search').value = displayOptions.search;
+  if (displayOptions.showDone) {
+    if(displayOptions.showUndone) {
+      document.getElementById('all-tasks').selected = true;
+    } else {
+      document.getElementById('done-tasks').selected = true;
+    }
+  } else {
+    document.getElementById('undone-tasks').selected = true;
+  }
   let alteredList = [];
   list.forEach((item, i) => {
     if ((displayOptions.showDone && item.done) || (displayOptions.showUndone && !item.done)) {
