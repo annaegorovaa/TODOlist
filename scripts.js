@@ -74,17 +74,6 @@ document.getElementById('date').addEventListener('click', () => {
   applyOptions();
 });
 
-function addTask() {
-  let task = document.getElementById('input');
-  let taskValue = task.value;
-  if (taskValue) {
-    list.push({title: taskValue, done: false, date: Date.now()});
-  }
-  task.value = '';
-  localStorage.setItem('tasks', JSON.stringify(list));
-  applyOptions();
-}
-
 function checkboxClickHandler(e) {
   changeDone(e.target.getAttribute('index'));
 }
@@ -98,61 +87,15 @@ function delClickHandler(e) {
   removeTask(e.target.getAttribute('index'));
 }
 
-function renderList(alteredList) {
-  const table = document.getElementById('list');
-  table.innerHTML = '';
-  alteredList.forEach((item) => {
-    let tr = document.createElement('tr');
-    let checkbox = createCheckbox(item.index);
-    if (item.done) {
-      tr.className = 'done';
-      checkbox.className = item.done ? 'far fa-check-circle' : 'far fa-circle';
-    }
-    let td1 = document.createElement('td');
-    td1.appendChild(checkbox);
-    tr.appendChild(td1);
-    let td2 = document.createElement('td');
-    td2.innerText = item.title;
-    tr.appendChild(td2);
-    let td3 = document.createElement('td');
-    td3.innerText = new Date(item.date).toLocaleDateString();
-    tr.appendChild(td3);
-    let edit = createEditButton(item.index);
-    let td4 = document.createElement('td');
-    td4.appendChild(edit);
-    tr.appendChild(td4);
-    let del = createDelButton(item.index);
-    let td5 = document.createElement('td');
-    td5.appendChild(del);
-    tr.appendChild(td5);
-    table.appendChild(tr);
-  });
-}
-
-function createCheckbox(index) {
-  let checkbox = document.createElement('i');
-  checkbox.className = 'far fa-circle';
-  checkbox.setAttribute('index', index);
-  checkbox.addEventListener('click', checkboxClickHandler);
-  return checkbox;
-}
-
-function createEditButton(index) {
-  let edit = document.createElement('i');
-  edit.className = 'far fa-edit';
-  edit.setAttribute('data-toggle', 'modal');
-  edit.setAttribute('data-target', '#modal');
-  edit.setAttribute('index', index);
-  edit.addEventListener('click', editClickHandler);
-  return edit;
-}
-
-function createDelButton(index) {
-  let del = document.createElement('i');
-  del.className = 'far fa-trash-alt';
-  del.setAttribute('index', index);
-  del.addEventListener('click', delClickHandler);
-  return del;
+function addTask() {
+  let task = document.getElementById('input');
+  let taskValue = task.value;
+  if (taskValue) {
+    list.push({title: taskValue, done: false, date: Date.now()});
+  }
+  task.value = '';
+  localStorage.setItem('tasks', JSON.stringify(list));
+  applyOptions();
 }
 
 function changeDone(index) {
@@ -174,6 +117,38 @@ function clearList() {
   list = [];
   localStorage.setItem('tasks', JSON.stringify(list));
   applyOptions();
+}
+
+function createCheckbox(index) {
+  let checkbox = document.createElement('i');
+  checkbox.className = 'far fa-circle';
+  checkbox.setAttribute('index', index);
+  checkbox.addEventListener('click', checkboxClickHandler);
+  return checkbox;
+}
+
+function createDate(dateValue) {
+  let date = document.createElement('td');
+  date.innerText = new Date(dateValue).toLocaleDateString();
+  return date;
+}
+
+function createEditButton(index) {
+  let edit = document.createElement('i');
+  edit.className = 'far fa-edit';
+  edit.setAttribute('data-toggle', 'modal');
+  edit.setAttribute('data-target', '#modal');
+  edit.setAttribute('index', index);
+  edit.addEventListener('click', editClickHandler);
+  return edit;
+}
+
+function createDelButton(index) {
+  let del = document.createElement('i');
+  del.className = 'far fa-trash-alt';
+  del.setAttribute('index', index);
+  del.addEventListener('click', delClickHandler);
+  return del;
 }
 
 function loadToDoListByXHR() {
@@ -218,6 +193,12 @@ function compareDate(task1, task2) {
   return 0;
 }
 
+function applySearch(e) {
+  displayOptions.search = e.target.value;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
+  applyOptions();
+}
+
 function typeEnter(e) {
   let x = e.key || e.which;
   if (x === 'Enter') {
@@ -248,8 +229,32 @@ function applyOptions() {
   renderList(alteredList);
 }
 
-function applySearch(e) {
-  displayOptions.search = e.target.value;
-  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
-  applyOptions();
+function renderList(alteredList) {
+  const table = document.getElementById('list');
+  table.innerHTML = '';
+  alteredList.forEach((item) => {
+    let tr = document.createElement('tr');
+    let checkbox = createCheckbox(item.index);
+    if (item.done) {
+      tr.className = 'done';
+      checkbox.className = item.done ? 'far fa-check-circle' : 'far fa-circle';
+    }
+    let td1 = document.createElement('td');
+    td1.appendChild(checkbox);
+    tr.appendChild(td1);
+    let td2 = document.createElement('td');
+    td2.innerText = item.title;
+    tr.appendChild(td2);
+    let td3 = createDate(item.date);
+    tr.appendChild(td3);
+    let edit = createEditButton(item.index);
+    let td4 = document.createElement('td');
+    td4.appendChild(edit);
+    tr.appendChild(td4);
+    let del = createDelButton(item.index);
+    let td5 = document.createElement('td');
+    td5.appendChild(del);
+    tr.appendChild(td5);
+    table.appendChild(tr);
+  });
 }
