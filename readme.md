@@ -11,7 +11,7 @@ ToDo List is a web application for managing personal tasks.
 * Display all, only done or only undone tasks
 * Search tasks by name
 * Store list of tasks in browser local storage
-* Store store display, sort and search options in browser local storage
+* Store display, sort and search options in browser local storage
 
 # Screenshots
 Overview
