@@ -62,6 +62,7 @@ document.getElementById('task').addEventListener('click', () => {
   displayOptions.chosenSort = 'name';
   document.getElementById('date-i').removeAttribute('class');
   list.sort(compareName);
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
   applyOptions();
 });
 
@@ -71,6 +72,7 @@ document.getElementById('date').addEventListener('click', () => {
   displayOptions.chosenSort = 'date';
   document.getElementById('task-i').removeAttribute('class');
   list.sort(compareDate);
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
   applyOptions();
 });
 
@@ -232,6 +234,13 @@ function applyOptions() {
   });
   alteredList = alteredList.filter(el => el.title.includes(displayOptions.search));
   alteredList.sort(displayOptions.chosenSort === 'date' ? compareDate : compareName);
+  if (displayOptions.chosenSort === 'date') {
+    document.getElementById('date-i').className = displayOptions.sortAscend ? 'fas fa-sort-up' : 'fas fa-sort-down';
+    document.getElementById('task-i').removeAttribute('class');
+  } else {
+    document.getElementById('task-i').className = displayOptions.sortAscend ? 'fas fa-sort-up' : 'fas fa-sort-down';
+    document.getElementById('date-i').removeAttribute('class');
+  }
   renderList(alteredList);
 }
 
