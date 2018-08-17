@@ -29,13 +29,7 @@ document.getElementById('save-btn').addEventListener('click', () => {
   changeTask(currentIndex, editableTask.value);
 });
 
-document.getElementById('all-tasks').addEventListener('click', allTasksSelectHandler);
-
-document.getElementById('done-tasks').addEventListener('click', doneTasksSelectHandler);
-
-document.getElementById('undone-tasks').addEventListener('click', undoneTasksSelectHandler);
-
-document.getElementById('select').addEventListener('change', () => {
+document.getElementById('select').addEventListener('change', (event) => {
   if (event.target.value === 'Show done') {
     doneTasksSelectHandler();
   } else if (event.target.value === 'Show undone') {
