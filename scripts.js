@@ -29,25 +29,20 @@ document.getElementById('save-btn').addEventListener('click', () => {
   changeTask(currentIndex, editableTask.value);
 });
 
-document.getElementById('all-tasks').addEventListener('click', () => {
-  displayOptions.showDone = true;
-  displayOptions.showUndone = true;
-  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
-  applyOptions();
-});
+document.getElementById('all-tasks').addEventListener('click', allTasksSelectHandler);
 
-document.getElementById('done-tasks').addEventListener('click', () => {
-  displayOptions.showDone = true;
-  displayOptions.showUndone = false;
-  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
-  applyOptions();
-});
+document.getElementById('done-tasks').addEventListener('click', doneTasksSelectHandler);
 
-document.getElementById('undone-tasks').addEventListener('click', () => {
-  displayOptions.showDone = false;
-  displayOptions.showUndone = true;
-  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
-  applyOptions();
+document.getElementById('undone-tasks').addEventListener('click', undoneTasksSelectHandler);
+
+document.getElementById('select').addEventListener('change', () => {
+  if (event.target.value === 'Show done') {
+    doneTasksSelectHandler();
+  } else if (event.target.value === 'Show undone') {
+    undoneTasksSelectHandler();
+  } else {
+    allTasksSelectHandler();
+  }
 });
 
 document.getElementById('btn-xhr').addEventListener('click', () => loadToDoListByXHR());
@@ -75,6 +70,27 @@ document.getElementById('date').addEventListener('click', () => {
   localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
   applyOptions();
 });
+
+function allTasksSelectHandler() {
+  displayOptions.showDone = true;
+  displayOptions.showUndone = true;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
+  applyOptions();
+}
+
+function doneTasksSelectHandler() {
+  displayOptions.showDone = true;
+  displayOptions.showUndone = false;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
+  applyOptions();
+}
+
+function undoneTasksSelectHandler() {
+  displayOptions.showDone = false;
+  displayOptions.showUndone = true;
+  localStorage.setItem('dispOptions', JSON.stringify(displayOptions));
+  applyOptions();
+}
 
 function checkboxClickHandler(e) {
   changeDone(e.target.getAttribute('index'));
