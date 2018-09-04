@@ -1,11 +1,8 @@
+const editableTask = document.getElementById('editable-task');
+const url = 'http://localhost:5000';
 let list =[];
 let currentIndex;
-const editableTask = document.getElementById('editable-task');
 let displayOptions = {};
-
-if (localStorage.tasks) {
-  list = JSON.parse(localStorage.tasks);
-}
 
 if (localStorage.dispOptions) {
   displayOptions = JSON.parse(localStorage.dispOptions);
@@ -19,7 +16,7 @@ if (localStorage.dispOptions) {
   };
 }
 
-applyOptions();
+loadToDoList();
 
 document.onkeyup = typeEnter;
 
@@ -39,7 +36,7 @@ document.getElementById('select').addEventListener('change', (event) => {
   }
 });
 
-document.getElementById('btn-xhr').addEventListener('click', () => loadToDoListByXHR());
+document.getElementById('btn-xhr').addEventListener('click', () => loadToDoList());
 
 document.getElementById('clear-tasks').addEventListener('click', () => clearList());
 
@@ -100,34 +97,42 @@ function delClickHandler(e) {
 }
 
 function addTask() {
-  let task = document.getElementById('input');
+  const task = document.getElementById('input');
   let taskValue = task.value;
   if (taskValue) {
-    list.push({title: taskValue, done: false, date: Date.now()});
+    axios.post(url, {
+      title: taskValue,
+      done: false,
+      date: Date.now()
+    })
+      .then(loadToDoList)
+      .catch(function (error) {
+        console.log('ERROR: ', error);
+      });
   }
   task.value = '';
-  localStorage.setItem('tasks', JSON.stringify(list));
   applyOptions();
 }
 
 function changeDone(index) {
   list[index].done = !list[index].done;
+  requestPatch(index);
   applyOptions();
 }
 
 function removeTask(value) {
-  list.splice(value, 1);
+  requestDelete(list[value]);
   applyOptions();
 }
 
 function changeTask(index, value) {
   list[index].title = value;
+  requestPatch(index);
   applyOptions();
 }
 
 function clearList() {
-  list = [];
-  localStorage.setItem('tasks', JSON.stringify(list));
+  list.forEach(e => requestDelete(e));
   applyOptions();
 }
 
@@ -169,26 +174,17 @@ function createDelButton(index) {
   return del;
 }
 
-function loadToDoListByXHR() {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://jsonplaceholder.typicode.com/todos', true);
-  xhr.send();
-  let loadedList = [];
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      loadedList = JSON.parse(xhr.response).map((el, i) => ({
-        ...el,
-        done: el.completed,
-        date: Date.now() + i
+function loadToDoList() {
+  axios.get(url)
+    .then(function (response) {
+      list = response.data.map(el => ({
+        ...el
       }));
-      list = [
-        ...list,
-        ...loadedList
-      ];
-      localStorage.setItem('tasks', JSON.stringify(list));
       applyOptions();
-    }
-  };
+    })
+    .catch(function (error) {
+      console.log('ERROR: ', error);
+    });
 }
 
 function compareName(task1, task2) {
@@ -281,4 +277,24 @@ function renderList(alteredList) {
     tr.appendChild(td5);
     table.appendChild(tr);
   });
+}
+
+function requestPatch(value) {
+  axios.patch(url, {
+    data: list[value]
+  })
+    .then(loadToDoList)
+    .catch(function (error) {
+      console.log('ERROR: ', error);
+    });
+}
+
+function requestDelete(task) {
+  axios.delete(url, {
+    data: task
+  })
+    .then(loadToDoList)
+    .catch(function (error) {
+      console.log('ERROR: ', error);
+    });
 }
