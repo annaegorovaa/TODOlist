@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/annaegorovaa/TODOlist#readme",
   "devDependencies": {
-    "eslint": "^5.2.0"
+    "eslint": "^5.13.0"
   },
   "dependencies": {
     "bootstrap": "^4.1.3"
