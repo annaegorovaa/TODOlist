@@ -20,6 +20,6 @@
     "eslint": "^5.13.0"
   },
   "dependencies": {
-    "bootstrap": "^4.1.3"
+    "bootstrap": "^4.3.1"
   }
 }
